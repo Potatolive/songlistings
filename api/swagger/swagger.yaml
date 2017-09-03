@@ -1,0 +1,201 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Song Listings
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /availableDates:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: availableDates
+    get:
+      description: Retuns next 7 available dates
+      # used as the method name of the controller
+      operationId: getAvailableDates
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              type: string
+              description: available date in YYYYMMDD format
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /{requestDate}/movies/:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: movie
+    get:
+      description: Returns list of movies for the requested date searched by movie name
+      # used as the method name of the controller
+      operationId: searchMovieByName
+      parameters:
+        - in: path
+          name: requestDate
+          description: "Requested Date in YYYYMMDD format"
+          type: string
+          required: true
+        - in: query
+          name: movieName
+          description: "Movie name wild card search"
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              # a pointer to a definition
+              $ref: "#/definitions/Movie"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /{requestDate}/songs/:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: song
+    get:
+      description: Retuns list of songs available for that date searched by song name
+      parameters:
+        - in: path
+          name: requestDate
+          type: string
+          description: Requested Date in YYYYMMDD
+          required: true
+        - in: query
+          name: songName
+          type: string
+          description: Wild card song name
+      # used as the method name of the controller
+      operationId: searchSongByName
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              # a pointer to a definition
+              $ref: "#/definitions/Song"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /movie/{movieId}/songs:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: song
+    get:
+      description: Retuns list of songs for a specific movie
+      parameters:
+        - in: path
+          name: movieId
+          type: string
+          description: Wild card movie name
+          required: true
+      # used as the method name of the controller
+      operationId: getSongsForAMovie
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              # a pointer to a definition
+              $ref: "#/definitions/Song"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  Movie:
+    required:
+      - title
+    properties:
+      _id:
+        type: string
+        format: uuid
+        description: Unique identifier of the movie returned by the get request. Not to be submitted while creating a movie
+      title:
+        type: string
+        description: Title of the movie
+      posterUrl: 
+        type: string
+        description: Poster image URL of the movie.  
+      director:
+        type: string
+        description: Name of the director(s), comma seperated
+      cast:
+        type: string
+        description: List of casts, comma seperated.
+      musicDirector:
+        type: string
+        description: List of music director, comma seperated.
+      genre:
+        type: string
+        description: Genre of the movies, eg; Thriller, Action Masala, etc.
+      producer:
+        type: string
+        description: List of music producer, comma seperated.
+      opening:
+        type: string
+        description: Movie opening date in YYYYMMDD format. eg; 20171123 
+  Song:
+    required:
+      - title
+      - seqNo
+    properties:
+      _id:
+        type: string
+        format: uuid
+        description: Unique identifier of the song returned by the get request. Not to be submitted while creating a song
+      seqNo:
+        type: integer
+        description: Sequence as it appears in the movie
+      movieTitle:
+        type: string
+        description: Title of the movie
+      title:
+        type: string
+        description: Title of the song
+      posterUrl:
+        type: string
+        description: Poster URL of the song
+      musicDirector:
+        type: string
+        description: List of music director, comma seperated.
+      lyrics:
+        type: string
+        description: List of liricists, comma seperated
+      singers:
+        type: string
+        description: List of singers, comma seperated
+      length:
+        type: string
+        description: length of the song in minutes. Format 4:46 
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string

@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "songlistings-executor",
+    "name": "songlistings",
+    "region": "ap-south-1"
+  },
+  "api": {
+    "id": "um0ariy15d"
+  }
+}
