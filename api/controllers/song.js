@@ -11,6 +11,7 @@
   It is a good idea to list the modules that your application depends on in the package.json in the project root
  */
 var util = require('util');
+var movies = require('../helpers/dbmovies')
 
 /*
  Once you 'require' a module you can reference the things that it exports.  These are defined in module.exports.
@@ -37,76 +38,29 @@ module.exports = {
  */
 function searchSongByName(req, res) {
   // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
-//   var requestDate = req.swagger.params.requestDate.value;
-//   var songName = req.swagger.params.songName.value;
-//   var movieId = req.swagger.params.movieId.value;
+  var requestDate = req.swagger.params.requestDate.value;
+  var searchTerm = ""
+  if(req.swagger.params.searchTerm) searchTerm = req.swagger.params.searchTerm.value;
 
-//   console.log("Request Date: " + requestDate);
-//   console.log("Song Name: " + songName);
-//   console.log("Movie ID: " + movieId);
+  console.log("Request Date: " + requestDate);
+  console.log("Search Term: " + searchTerm);
+
+  movies.search(requestDate, searchTerm, 
+    function(data) {
+      res.json(data);
+    }, 
+    function(error) {
+      console.log(error);
+      res.json({"Error": error});
+    }
+  );
 
   // this sends back a JSON response which is a single string
-  res.json(searchSong());
+//   res.json(searchSong());
 }
 
 function searchSong() {
-    var songs = [
-        {
-            "_id": guid(),
-            "seqNo": 1,
-            "movieTitle": "Bairavaa",
-            "title": "Pattaya Kelappu",
-            "posterUrl": "https://upload.wikimedia.org/wikipedia/en/4/46/Bairavaa_movie_poster.jpg",
-            "musicDirector": "Santhosh Narayanan",
-            "lyrics": "Vairamuthu",
-            "singers": "Ananthu, Benny Dayal",
-            "length": "4:46"
-        },
-        {
-            "_id": guid(),
-            "seqNo": 2,
-            "movieTitle": "Bairavaa",
-            "title": "Nilaayo",
-            "posterUrl": "https://upload.wikimedia.org/wikipedia/en/4/46/Bairavaa_movie_poster.jpg",
-            "musicDirector": "Santhosh Narayanan",
-            "lyrics": "Vairamuthu",
-            "singers": "Haricharan",
-            "length": "4:13"
-        },
-        {
-            "_id": guid(),
-            "seqNo": 3,
-            "movieTitle": "Bairavaa",
-            "title": "Pa Pa",
-            "posterUrl": "https://upload.wikimedia.org/wikipedia/en/4/46/Bairavaa_movie_poster.jpg",
-            "musicDirector": "Santhosh Narayanan",
-            "lyrics": "Vairamuthu",
-            "singers": "Vijay, Priyadarshini",
-            "length": "4:07"
-        },
-        {
-            "_id": guid(),
-            "seqNo": 4,
-            "movieTitle": "Bairavaa",
-            "title": "Azhagiya Soodana Poovey",
-            "posterUrl": "https://upload.wikimedia.org/wikipedia/en/4/46/Bairavaa_movie_poster.jpg",
-            "musicDirector": "Santhosh Narayanan",
-            "lyrics": "Vairamuthu",
-            "singers": "Vijaynarain, Darshana KT",
-            "length": "4:41"
-        },
-        {
-            "_id": guid(),
-            "seqNo": 1,
-            "movieTitle": "Bairavaa",
-            "title": "Pattaya Kelappu",
-            "posterUrl": "https://upload.wikimedia.org/wikipedia/en/4/46/Bairavaa_movie_poster.jpg",
-            "musicDirector": "Santhosh Narayanan",
-            "lyrics": "Arunraja Kamaraj, Roshan Jamrock",
-            "singers": "Arunraja Kamaraj, Roshan Jamrock",
-            "length": "3:56"
-        }
-    ]
+    
 
     return songs;
 }
