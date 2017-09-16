@@ -21,6 +21,8 @@
     "supertest": "^1.0.0"
   },
   "scripts": {
+    "create": "claudia create --handler lambda.handler --deploy-proxy-api --region $AWS_DEFAULT_REGION --profile claudia",
+    "update": "claudia update",
     "start": "node app.js",
     "test": "swagger project test"
   }
