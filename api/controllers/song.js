@@ -45,7 +45,9 @@ function searchSongByName(req, res) {
   console.log("Request Date: " + requestDate);
   console.log("Search Term: " + searchTerm);
 
-  songs.search(requestDate, searchTerm, 
+  if(!searchTerm) searchTerm = "";
+
+  songs.search(requestDate, searchTerm.toLowerCase(), 
     function(data) {
       res.json(data);
     }, 
