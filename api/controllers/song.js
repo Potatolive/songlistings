@@ -11,7 +11,7 @@
   It is a good idea to list the modules that your application depends on in the package.json in the project root
  */
 var util = require('util');
-var movies = require('../helpers/dbmovies')
+var songs = require('../helpers/dbSongs')
 
 /*
  Once you 'require' a module you can reference the things that it exports.  These are defined in module.exports.
@@ -45,32 +45,13 @@ function searchSongByName(req, res) {
   console.log("Request Date: " + requestDate);
   console.log("Search Term: " + searchTerm);
 
-  movies.search(requestDate, searchTerm, 
+  songs.search(requestDate, searchTerm, 
     function(data) {
       res.json(data);
     }, 
     function(error) {
       console.log(error);
-      res.json({"Error": error});
+      res.json({"message": error});
     }
   );
-
-  // this sends back a JSON response which is a single string
-//   res.json(searchSong());
 }
-
-function searchSong() {
-    
-
-    return songs;
-}
-
-function guid() {
-    function s4() {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-      s4() + '-' + s4() + s4() + s4();
-  }
