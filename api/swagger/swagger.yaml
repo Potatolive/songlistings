@@ -38,17 +38,16 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /{requestDate}/songs/:
+  /songs/:
     # binds a127 app logic to a route
     x-swagger-router-controller: song
     get:
       description: Retuns list of songs available for a specific day filtered by search term
       parameters:
-        - in: path
+        - in: query
           name: requestDate
           type: string
           description: Requested Date in YYYYMMDD. Placeholder for enhancement
-          required: true
         - in: query
           name: searchTerm
           type: string

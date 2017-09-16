@@ -51,7 +51,7 @@ function searchSongByName(req, res) {
     }, 
     function(error) {
       console.log(error);
-      res.json({"message": error});
+      res.json(error);
     }
   );
 }

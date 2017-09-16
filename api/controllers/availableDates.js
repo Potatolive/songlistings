@@ -37,6 +37,7 @@ module.exports = {
 function pad(n) {return n < 10 ? "0"+n : n;} //TODO - Move this to date util
 
 function getAvailableDates(req, res) {
+    console.log('Dates request ...!');
     var aryDates = [];
     var daysToAdd = 7;
 
