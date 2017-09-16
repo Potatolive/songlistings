@@ -12,14 +12,19 @@ function search(requestDate, searchTerm, then, error) {
         var client = db.getDbClient();
         
         var params = {
-            TableName: "MovieList",
-            FilterExpression: "contains(movieTitle, :searchTerm) or contains(Title, :searchTerm)",
-            ExpressionAttributeValues: {
+            TableName: "MovieList"
+        }
+
+        if(searchTerm && searchTerm != '') {
+            params.FilterExpression = "contains(movieTitle, :searchTerm) or contains(Title, :searchTerm)";
+            params.ExpressionAttributeValues = {
                 ":searchTerm": searchTerm
             }
+        } else {
+            params.Limit = 100
         }
     
-        console.log('start to scan the table!');
+        console.log('start to scan the table! ' + JSON.stringify(params));
         client.scan(params, function(err, data) {
             if(err) {
                 console.log('scan completed with error!');
