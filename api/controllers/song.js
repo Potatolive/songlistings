@@ -27,7 +27,7 @@ var songs = require('../helpers/dbSongs')
  */
 module.exports = {
     searchSongByName: searchSongByName,
-    getSongsForAMovie: searchSongByName
+    getSong: getSong
 };
 
 /*
@@ -38,6 +38,9 @@ module.exports = {
  */
 function searchSongByName(req, res) {
   // variables defined in the Swagger document can be referenced using req.swagger.params.{parameter_name}
+
+  console.log('Swagger: ' + req.swagger.params);
+
   var requestDate = req.swagger.params.requestDate.value;
   var searchTerm = ""
   if(req.swagger.params.searchTerm) searchTerm = req.swagger.params.searchTerm.value;
@@ -56,4 +59,18 @@ function searchSongByName(req, res) {
       res.json(error);
     }
   );
+}
+
+function getSong(req, res) {
+  var id = req.swagger.params.id.value;
+
+  console.log("Song Id Requested: " + id);
+
+  songs.get_song(id, function(data) {
+    res.json(data);
+  }, 
+  function(error) {
+    console.log(error);
+    res.json(error);
+  });
 }

@@ -67,6 +67,24 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /song/{id}:
+    x-swagger-router-controller: song
+    get: 
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      operationId: getSong
+      responses:
+        '200':
+          description: Success
+          schema: 
+            $ref: "#/definitions/Song"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
@@ -75,39 +93,37 @@ definitions:
     properties:
       Title:
         type: string
-      movieTitle:
+      MovieTitle:
         type: string
-      No:
+      NoInTheMovie:
         type: string
       Length:
         type: string
-      music_by:
+      MusicBy:
         type: string
       Singers:
         type: string
-      starring:
+      Starring:
         type: string
-      moviePosterUrl:
+      MoviePosterUrl:
         type: string
-      cinematography:
+      Cinematography:
         type: string
-      production_company:
+      ProductionCompany:
         type: string
-      written_by:
+      WrittenBy:
         type: string
-      directed_by:
+      DirectedBy:
         type: string
-      distributed_by:
+      DistributedBy:
         type: string
-      edited_by:
+      EditedBy:
         type: string
-      language:
+      Language:
         type: string
-      country:
+      MovieUrl:
         type: string
-      movieUrl:
-        type: string
-      release_date:
+      ReleaseDate:
         type: string
   ErrorResponse:
     required:

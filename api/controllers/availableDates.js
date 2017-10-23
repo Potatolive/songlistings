@@ -54,6 +54,7 @@ function getAvailableDates(req, res) {
     for (var i = 0; i < daysToAdd; i++) {
         var currentDate = new Date();
         currentDate.setDate(currentDate.getDate() + i);
+        console.log(currentDate);
         aryDates.push(
             {'Date': currentDate.yyyymmdd(), 'Enabled': true}
         );
