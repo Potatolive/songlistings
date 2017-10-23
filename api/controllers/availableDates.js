@@ -36,6 +36,16 @@ module.exports = {
  */
 function pad(n) {return n < 10 ? "0"+n : n;} //TODO - Move this to date util
 
+Date.prototype.yyyymmdd = function() {
+        var mm = this.getMonth() + 1; // getMonth() is zerobased
+        var dd = this.getDate();
+    
+        return [this.getFullYear(),
+                (mm>9 ? '' : '0') + mm,
+                (dd>9 ? '' : '0') + dd
+               ].join('');
+    };
+
 function getAvailableDates(req, res) {
     console.log('Dates request ...!');
     var aryDates = [];
@@ -45,9 +55,7 @@ function getAvailableDates(req, res) {
         var currentDate = new Date();
         currentDate.setDate(currentDate.getDate() + i);
         aryDates.push(
-            currentDate.getFullYear() + 
-            pad(currentDate.getMonth()+1) +
-            pad(currentDate.getDate())
+            {'Date': currentDate.yyyymmdd(), 'Enabled': true}
         );
     }
 
