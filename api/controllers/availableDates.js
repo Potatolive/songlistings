@@ -56,7 +56,11 @@ function getAvailableDates(req, res) {
         currentDate.setDate(currentDate.getDate() + i);
         console.log(currentDate);
         aryDates.push(
-            {'Date': currentDate.yyyymmdd(), 'Enabled': true}
+            {
+              'Date': currentDate.yyyymmdd(), 
+              'Slot': ["2-3 PM", "8-10 PM"],
+              'Enabled': true
+            }
         );
     }
 
